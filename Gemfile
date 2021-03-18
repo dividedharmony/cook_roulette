@@ -1,6 +1,10 @@
 source 'https://rubygems.org'
 
-gem 'pry'
+gem 'sinatra'
 gem 'nokogiri'
 gem 'httparty'
-gem 'sinatra'
+
+group :development, :test do
+  gem 'pry'
+  gem 'dotenv'
+end
