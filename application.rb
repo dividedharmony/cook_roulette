@@ -22,3 +22,8 @@ end
 get '/' do
   erb :"form.html"
 end
+
+post "/recipes" do
+  @recipe_url = params["recipe_url"]
+  erb :"form.html"
+end

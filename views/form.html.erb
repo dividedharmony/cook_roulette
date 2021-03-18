@@ -7,10 +7,17 @@
   copy the URL, and post it below:
 </p>
 
+<% if @recipe_url %>
+  <p>
+    You successfully submitted a recipe from
+    <a href="<%= @recipe_url %>"> <%= @recipe_url %></a>
+  </p>
+<% end %>
+
 <form action="/recipes" method="post">
   <label>
     Recipe URL:
-    <input type="text" placeholder="AllRecipes URL" />
+    <input type="text" name="recipe_url" placeholder="AllRecipes URL" />
   </label>
 
   <input type="submit" value="Post" />
