@@ -6,6 +6,11 @@ RSpec.describe Ingredient do
   include Shoulda::Matchers::ActiveModel
   include Shoulda::Matchers::ActiveRecord
 
+  describe "associations" do
+    it { is_expected.to have_many(:line_items) }
+    it { is_expected.to have_many(:recipes).through(:line_items) }
+  end
+
   describe "validations" do
     describe "name" do
       subject(:ingredient) { 

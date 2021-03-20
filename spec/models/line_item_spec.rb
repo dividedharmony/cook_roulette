@@ -6,6 +6,11 @@ RSpec.describe LineItem do
   include Shoulda::Matchers::ActiveModel
   include Shoulda::Matchers::ActiveRecord
 
+  describe "associations" do
+    it { is_expected.to belong_to(:recipe).required }
+    it { is_expected.to belong_to(:ingredient).required }
+  end
+
   describe "validations" do
     describe "raw_text" do
       subject(:ingredient) { 

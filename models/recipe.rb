@@ -3,6 +3,9 @@
 require './models/application_record'
 
 class Recipe < ApplicationRecord
+  has_many :line_items, dependent: :destroy
+  has_many :ingredients, through: :line_items
+
   validates :name, 
             presence: true,
             uniqueness: { case_sensitive: false }
