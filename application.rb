@@ -13,17 +13,19 @@ Bundler.require(:default, SINATRA_ENV)
 
 require "./models/cook_roulette/ip_address"
 
-before do
-  if CookRoulette::IpAddress.forbidden?(request.ip)
-    halt 403
+class CookRouletteApp < Sinatra::Base
+  before do
+    if CookRoulette::IpAddress.forbidden?(request.ip)
+      halt 403
+    end
   end
-end
 
-get '/' do
-  erb :"form.html"
-end
+  get '/' do
+    erb :"form.html"
+  end
 
-post "/recipes" do
-  @recipe_url = params["recipe_url"]
-  erb :"form.html"
+  post "/recipes" do
+    @recipe_url = params["recipe_url"]
+    erb :"form.html"
+  end
 end
