@@ -14,10 +14,20 @@
 #
 # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
 
-# Load env vars
-ENV.fetch("SINATRA_ENV") do |el|
+# Load env vars and establish db connection
+SINATRA_ENV = ENV.fetch("SINATRA_ENV") do |el|
   require 'dotenv/load'
+  ENV.fetch(el)
 end
+
+require 'yaml'
+
+DB_CONFIG = YAML::load(
+  File.open('config/database.yml')
+).fetch(SINATRA_ENV)
+
+require 'active_record'
+require 'database_cleaner/active_record'
 
 RSpec.configure do |config|
   # rspec-expectations config goes here. You can use an alternate
@@ -49,6 +59,20 @@ RSpec.configure do |config|
   # inherited by the metadata hash of host groups and examples, rather than
   # triggering implicit auto-inclusion in groups with matching metadata.
   config.shared_context_metadata_behavior = :apply_to_host_groups
+
+  # Clean the database before running the suite
+  config.before(:suite) do
+    ActiveRecord::Base.establish_connection(DB_CONFIG)
+    DatabaseCleaner.strategy = :transaction
+    DatabaseCleaner.clean_with(:truncation)
+  end
+
+  # Clean the database between tests
+  config.around(:each) do |example|
+    DatabaseCleaner.cleaning do
+      example.run
+    end
+  end
 
 # The settings below are suggested to provide a good initial experience
 # with RSpec, but feel free to customize to your heart's content.
