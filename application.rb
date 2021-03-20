@@ -24,11 +24,13 @@ class CookRouletteApp < Sinatra::Base
   end
 
   get '/' do
+    @recipe_url = session["recipe_url"]
+    session["recipe_url"] = nil
     erb :"homepage.html"
   end
 
   post "/recipes" do
-    @recipe_url = params["recipe_url"]
-    erb :"form.html"
+    session["recipe_url"] = params["recipe_url"]
+    redirect to("/")
   end
 end
