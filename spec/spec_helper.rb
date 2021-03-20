@@ -14,20 +14,20 @@
 #
 # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
 
+require 'yaml'
+
 # Load env vars and establish db connection
 SINATRA_ENV = ENV.fetch("SINATRA_ENV") do |el|
-  require 'dotenv/load'
+  require 'dotenv'
+  Dotenv.load('.env.test')
   ENV.fetch(el)
 end
 
-require 'yaml'
+Bundler.require(:default, SINATRA_ENV)
 
 DB_CONFIG = YAML::load(
   File.open('config/database.yml')
 ).fetch(SINATRA_ENV)
-
-require 'active_record'
-require 'database_cleaner/active_record'
 
 RSpec.configure do |config|
   # rspec-expectations config goes here. You can use an alternate
