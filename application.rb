@@ -21,7 +21,7 @@ class CookRouletteApp < Sinatra::Base
   end
 
   get '/' do
-    erb :"form.html"
+    erb :"homepage.html"
   end
 
   post "/recipes" do
