@@ -2,6 +2,7 @@
 
 # Ignore files related to API keys
 .env
+.env.test
 
 # Ignore local sqlite3 database files
 *.db
