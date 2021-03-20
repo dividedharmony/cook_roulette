@@ -6,3 +6,6 @@
 
 # Ignore local sqlite3 database files
 *.db
+
+# Ignore rspec generated files
+spec/examples.txt
