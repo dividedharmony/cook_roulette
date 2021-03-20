@@ -1,0 +1,9 @@
+# database configuration for ActiveRecord
+development:
+  name: schema.rb
+  adapter: sqlite3
+  database: development.db
+test:
+  # test configuration
+production:
+  # production configuration
