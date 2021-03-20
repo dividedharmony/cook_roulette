@@ -4,7 +4,9 @@ require 'yaml'
 
 # Load env vars if not yet loaded
 SINATRA_ENV = ENV.fetch("SINATRA_ENV") do |el|
-  require 'dotenv/load'
+  require 'dotenv'
+  env_file = ENV.key?('ENV') ? ".env.#{ENV['ENV']}" : ".env"
+  Dotenv.load(env_file)
   ENV.fetch(el)
 end
 DB_CONFIG = YAML::load(
