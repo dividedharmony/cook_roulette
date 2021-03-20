@@ -17,17 +17,17 @@
 require 'yaml'
 
 # Load env vars and establish db connection
-SINATRA_ENV = ENV.fetch("SINATRA_ENV") do |el|
+APP_ENV = ENV.fetch("APP_ENV") do |el|
   require 'dotenv'
   Dotenv.load('.env.test')
   ENV.fetch(el)
 end
 
-Bundler.require(:default, SINATRA_ENV)
+Bundler.require(:default, APP_ENV)
 
 DB_CONFIG = YAML::load(
   File.open('config/database.yml')
-).fetch(SINATRA_ENV)
+).fetch(APP_ENV)
 
 RSpec.configure do |config|
   # rspec-expectations config goes here. You can use an alternate
