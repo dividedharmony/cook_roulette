@@ -14,6 +14,9 @@ Bundler.require(:default, APP_ENV)
 require "./models/cook_roulette/ip_address"
 
 class CookRouletteApp < Sinatra::Base
+  enable :sessions
+  set :session_secret, ENV.fetch("SESSION_SECRET")
+
   before do
     if CookRoulette::IpAddress.forbidden?(request.ip)
       halt 403
