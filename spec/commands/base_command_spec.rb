@@ -3,11 +3,11 @@
 require './commands/base_command'
 
 RSpec.describe Commands::BaseCommand do
-  describe "#success?" do
-    let(:params) { instance_double(Sinatra::IndifferentHash) }
-    let(:request) { instance_double(Sinatra::Request) }
-    let(:command) { described_class.new(request: request, params: params) }
+  let(:params) { instance_double(Sinatra::IndifferentHash) }
+  let(:request) { instance_double(Sinatra::Request) }
+  let(:command) { described_class.new(request: request, params: params) }
 
+  describe "#success?" do
     subject { command.success? }
 
     it "is not implemented" do
@@ -16,25 +16,23 @@ RSpec.describe Commands::BaseCommand do
   end
 
   describe "#locals" do
-    let(:params) { instance_double(Sinatra::IndifferentHash) }
-    let(:request) { instance_double(Sinatra::Request) }
-    let(:command) { described_class.new(request: request, params: params) }
-
     subject { command.locals }
 
     it { is_expected.to eq({}) }
   end
 
   describe "#template_file" do
-    let(:params) { instance_double(Sinatra::IndifferentHash) }
-    let(:request) { instance_double(Sinatra::Request) }
-    let(:command) { described_class.new(request: request, params: params) }
-
     subject { command.template_file }
 
     it "is not implimented" do
       expect { subject }.to raise_error(NotImplementedError, "Commands::BaseCommand has not implemented a #template_file method.")
     end
+  end
+
+  describe "#flash" do
+    subject { command.flash }
+
+    it { is_expected.to be_instance_of(CookRoulette::Flash) }
   end
 
   describe "subclassing" do
