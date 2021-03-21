@@ -5,6 +5,7 @@ gem 'nokogiri'
 gem 'httparty'
 
 gem 'activerecord'
+gem 'dry-monads'
 
 group :development, :test do
   gem 'pry'
