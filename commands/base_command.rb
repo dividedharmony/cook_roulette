@@ -1,17 +1,24 @@
 # frozen_string_literal: true
 
+require 'dry/monads'
 require './models/cook_roulette/flash'
 
 module Commands
   class BaseCommand
-    def initialize(request:, params:)
+    include Dry::Monads[:result]
+
+    def self.call(request:, params:)
+      self.new(request, params).result
+    end
+
+    def initialize(request, params)
       @request = request
       @params = params
       @flash = CookRoulette::Flash.new
     end
 
-    def success?
-      raise NotImplementedError, "#{self.class.name} has not implemented a #success? method."
+    def result
+      raise NotImplementedError, "#{self.class.name} has not implemented a #result method."
     end
 
     def locals
