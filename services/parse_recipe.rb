@@ -7,11 +7,16 @@ require 'dry/monads'
 require 'dry/monads/do'
 
 class ParseRecipe
-  ParseRecipeResult = Struct.new(:given_url, :recipe_url, :recipe_title)
+  ParseRecipeResult = Struct.new(
+    :given_url,
+    :recipe_url,
+    :recipe_title,
+    :ingredient_list
+  )
 
   ALL_RECIPES_REGEX = /\Ahttps:\/\/www.allrecipes.com/i
   ALL_RECIPES_TITLE_CSS = ".recipe-main-header .heading-content"
-  ALL_RECIPES_INGREDIENT_CSS = ".ingredients-item-name"
+  ALL_RECIPES_INGREDIENTS_CSS = ".ingredients-item-name"
 
   include Dry::Monads[:result]
   include Dry::Monads::Do.for(:call)
@@ -27,13 +32,19 @@ class ParseRecipe
   end
 
   def call
-    @recipe_url       = yield validate_url
-    query_response    = yield query_recipe_url
-    document          = yield parse_response(query_response.body)
-    title_element     = yield get_title_element(document)
-    @recipe_title     = yield parse_title_element(title_element)
+    @recipe_url           = yield validate_url
+    query_response        = yield query_recipe_url
+    document              = yield parse_response(query_response.body)
+    title_element         = yield get_title_element(document)
+    @recipe_title         = yield parse_title_element(title_element)
+    ingredient_list       = yield get_ingredients(document)
     Success(
-      ParseRecipeResult.new(given_url, recipe_url, recipe_title)
+      ParseRecipeResult.new(
+        given_url,
+        recipe_url,
+        recipe_title,
+        ingredient_list
+      )
     )
   end
 
@@ -81,5 +92,14 @@ class ParseRecipe
     else
       Success(stripped_title)
     end
+  end
+
+  def get_ingredients(document)
+    ingredient_elements = document.css(ALL_RECIPES_INGREDIENTS_CSS)
+    ingredient_list = ingredient_elements.map do |el|
+      ingredient_text = el.text.strip
+      ingredient_text.empty? ? nil : ingredient_text
+    end.compact
+    Success(ingredient_list)
   end
 end

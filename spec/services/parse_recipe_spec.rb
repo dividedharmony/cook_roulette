@@ -120,6 +120,30 @@ RSpec.describe ParseRecipe do
               expect(result.recipe_url).to eq("https://www.allrecipes.com/recipe/777/example-recipe/")
               expect(result.recipe_title).to eq("Cheeseburgers in Paradise")
             end
+
+            context "if no ingredients are present" do
+              it "has an empty ingredient_list" do
+                expect(subject).to be_success
+                result = subject.value!
+                expect(result.ingredient_list).to be_empty
+              end
+            end
+
+            context "if ingredients are present" do
+              let(:mock_body) do
+                File.read("spec/fixtures/example_ingredients_doc.html")
+              end
+
+              it "has an ingredient_list with each ingredient" do
+                expect(subject).to be_success
+                result = subject.value!
+                expect(result.ingredient_list).to contain_exactly(
+                  "8 oz pineapple juice",
+                  "3 peppers",
+                  "1  carrot"
+                )
+              end
+            end
           end
         end
       end
