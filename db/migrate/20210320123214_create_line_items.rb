@@ -4,7 +4,7 @@ class CreateLineItems < ActiveRecord::Migration[6.1]
   def change
     create_table(:line_items) do |t|
       t.references :recipe, foreign_key: true, null: false
-      t.references :ingredient, foreign_key: true, null: false
+      t.references :ingredient, foreign_key: true, null: true
       t.string :raw_text, null: false
 
       t.timestamps

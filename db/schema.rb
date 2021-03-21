@@ -20,7 +20,7 @@ ActiveRecord::Schema.define(version: 2021_03_20_123214) do
 
   create_table "line_items", force: :cascade do |t|
     t.integer "recipe_id", null: false
-    t.integer "ingredient_id", null: false
+    t.integer "ingredient_id"
     t.string "raw_text", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false

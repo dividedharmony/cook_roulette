@@ -8,7 +8,7 @@ RSpec.describe LineItem do
 
   describe "associations" do
     it { is_expected.to belong_to(:recipe).required }
-    it { is_expected.to belong_to(:ingredient).required }
+    it { is_expected.to belong_to(:ingredient).optional }
   end
 
   describe "validations" do
