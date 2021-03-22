@@ -3,15 +3,27 @@
 APP_ENV = ENV.fetch("APP_ENV") do |el|
   require 'dotenv/load'
   ENV.fetch(el)
-end.to_sym
+end
+
+require 'yaml'
+
+DB_CONFIG = YAML::load(
+  File.read('config/database.yml')
+).fetch(APP_ENV)
 
 require 'bundler'
 
-Bundler.require(:default, APP_ENV)
+Bundler.require(:default, APP_ENV.to_sym)
+
+require 'active_record'
+
+ActiveRecord::Base.establish_connection(DB_CONFIG)
 
 # Sinatra app below
 
 require "./models/cook_roulette/ip_address"
+require "./commands/recipes/create"
+require "./commands/recipes/show"
 
 class CookRouletteApp < Sinatra::Base
   enable :sessions
@@ -30,7 +42,23 @@ class CookRouletteApp < Sinatra::Base
   end
 
   post "/recipes" do
-    session["recipe_url"] = params["recipe_url"]
-    redirect to("/")
+    create_result = Commands::Recipes::Create.(request: request, params: params)
+    if create_result.success?
+      create_cmd = create_result.value!
+      redirect to("/recipes/#{create_cmd.recipe.id}")
+    else
+      create_result.failure
+    end
+  end
+
+  get "/recipes/:id" do
+    show_result = Commands::Recipes::Show.(request: request, params: params)
+    if show_result.success?
+      show_cmd = show_result.value!
+      erb :"recipes/show.html", locals: show_cmd.locals
+    else
+      status 404
+      show_cmd.failure
+    end
   end
 end

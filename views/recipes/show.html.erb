@@ -1,0 +1,26 @@
+<h1>
+  Recipes#show
+</h1>
+
+<h3>
+  Recipe URL:
+  <%= recipe.url %>
+</h3>
+
+<h3>
+  Recipe Title:
+  <%= recipe.name %>
+</h3>
+
+<h3>
+  Created At:
+  <%= recipe.created_at %>
+</h3>
+
+<ol>
+  <% recipe.line_items.each do |line_item| %>
+    <li>
+      <%= line_item.raw_text %>
+    </li>
+  <% end %>
+</ol>
