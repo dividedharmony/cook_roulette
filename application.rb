@@ -24,6 +24,7 @@ ActiveRecord::Base.establish_connection(DB_CONFIG)
 require "./models/cook_roulette/ip_address"
 require "./commands/recipes/create"
 require "./commands/recipes/show"
+require "./commands/recipes/list"
 
 class CookRouletteApp < Sinatra::Base
   enable :sessions
@@ -41,6 +42,16 @@ class CookRouletteApp < Sinatra::Base
     @recipe_url = session["recipe_url"]
     session["recipe_url"] = nil
     erb :"homepage.html"
+  end
+
+  get '/recipes' do
+    list_result = Commands::Recipes::List.(request: request, params: params)
+    if list_result.success?
+      list_cmd = list_result.value!
+      erb :"recipes/index.html", locals: list_cmd.locals
+    else
+      list_result.failure
+    end
   end
 
   post "/recipes" do
