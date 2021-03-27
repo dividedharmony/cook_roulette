@@ -28,6 +28,8 @@ require "./commands/recipes/show"
 class CookRouletteApp < Sinatra::Base
   enable :sessions
   set :session_secret, ENV.fetch("SESSION_SECRET")
+  # Default assets folder:
+  # set :public_folder, __dir__ + "/public"
 
   before do
     if CookRoulette::IpAddress.forbidden?(request.ip)
