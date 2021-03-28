@@ -21,10 +21,14 @@ ActiveRecord::Base.establish_connection(DB_CONFIG)
 
 # Sinatra app below
 
+require "sinatra"
+require "rabl"
 require "./models/cook_roulette/ip_address"
 require "./commands/recipes/create"
 require "./commands/recipes/show"
 require "./commands/recipes/list"
+
+Rabl.register!
 
 class CookRouletteApp < Sinatra::Base
   enable :sessions
@@ -72,6 +76,14 @@ class CookRouletteApp < Sinatra::Base
     else
       status 404
       show_cmd.failure
+    end
+  end
+
+  get %r{/ingredients.?([\w]*)} do |ext|
+    if ext == "json"
+      rabl :"ingredients/index", format: :json
+    else
+      "Format is not supported"
     end
   end
 end
