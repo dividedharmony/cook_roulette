@@ -25,7 +25,7 @@ RSpec.describe ParseRecipe do
     context "if url is not valid" do
       let(:given_url) { "Not a valid URL" }
 
-      it "fails" do
+      it "returns a Failure monad" do
         expect(subject).not_to be_success
         expect(subject.failure).to eq(
           "We only support allrecipes.com currently. 'Not a valid URL' is not supported."
@@ -36,7 +36,7 @@ RSpec.describe ParseRecipe do
     context "if url does not go to allrecipes.com" do
       let(:given_url) { "www.example.com" }
 
-      it "fails" do
+      it "returns a Failure monad" do
         expect(subject).not_to be_success
         expect(subject.failure).to eq(
           "We only support allrecipes.com currently. 'www.example.com' is not supported."
@@ -56,7 +56,7 @@ RSpec.describe ParseRecipe do
       context "if query to url is not a 200 response" do
         let(:mock_response) { instance_double(HTTParty::Response, code: 403) }
 
-        it "fails" do
+        it "returns a Failure monad" do
           expect(subject).not_to be_success
           expect(subject.failure).to eq(
             "Response from https://www.allrecipes.com/recipe/777/example-recipe/ was a 403 response."
@@ -73,7 +73,7 @@ RSpec.describe ParseRecipe do
             expect(Nokogiri).to receive(:HTML).and_raise("Too fake to handle!")
           end
 
-          it "fails" do
+          it "returns a Failure monad" do
             expect(subject).not_to be_success
             expect(subject.failure).to eq(
               "Could not parse response: Too fake to handle!"
@@ -87,7 +87,7 @@ RSpec.describe ParseRecipe do
               File.open("spec/fixtures/example_blank_doc.html").read
             end
 
-            it "fails" do
+            it "returns a Failure monad" do
               expect(subject).not_to be_success
               expect(subject.failure).to eq(
                 "Could not find a title for recipe."
@@ -100,7 +100,7 @@ RSpec.describe ParseRecipe do
               File.read("spec/fixtures/example_blank_title_doc.html")
             end
 
-            it "fails" do
+            it "returns a Failure monad" do
               expect(subject).not_to be_success
               expect(subject.failure).to eq(
                 "Title of recipe was blank or not in expected location."

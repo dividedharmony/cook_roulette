@@ -19,7 +19,7 @@ RSpec.describe Commands::Recipes::Create do
     context "if given_url is nil" do
       let(:given_url) { nil }
 
-      it "fails" do
+      it "returns a Failure monad" do
         expect(subject).not_to be_success
         expect(subject.failure).to eq("Please provide a URL.")
       end
@@ -28,7 +28,7 @@ RSpec.describe Commands::Recipes::Create do
     context "if given_url is a blank string" do
       let(:given_url) { "   " }
 
-      it "fails" do
+      it "returns a Failure monad" do
         expect(subject).not_to be_success
         expect(subject.failure).to eq("Please provide a URL.")
       end
@@ -44,7 +44,7 @@ RSpec.describe Commands::Recipes::Create do
           Dry::Monads.Failure("Not good enough!")
         end
 
-        it "fails" do
+        it "returns a Failure monad" do
           expect(subject).not_to be_success
           expect(subject.failure).to eq("Not good enough!")
         end
@@ -69,7 +69,7 @@ RSpec.describe Commands::Recipes::Create do
             )
           end
 
-          it "fails" do
+          it "returns a Failure monad" do
             expect(subject).not_to be_success
             expect(subject.failure).to eq("Name has already been taken\nUrl has already been taken")
           end

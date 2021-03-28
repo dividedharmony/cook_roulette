@@ -16,7 +16,7 @@ RSpec.describe Commands::Ingredients::Create do
         params["line_item_id"] = 999_999_999
       end
 
-      it "fails" do
+      it "returns a Failure monad" do
         expect(subject).not_to be_success
         expect(subject.failure).to eq("Could not find line_item with id 999999999")
       end
@@ -40,7 +40,7 @@ RSpec.describe Commands::Ingredients::Create do
             params["ingredient_name"] = nil
           end
 
-          it "fails" do
+          it "returns a Failure monad" do
             expect(subject).not_to be_success
             expect(subject.failure).to eq("Name can't be blank")
           end
@@ -78,7 +78,7 @@ RSpec.describe Commands::Ingredients::Create do
             params["ingredient_id"] = 987_654_321
           end
 
-          it "fails" do
+          it "returns a Failure monad" do
             expect(subject).not_to be_success
             expect(subject.failure).to eq("Could not find ingredient with id 987654321")
           end
@@ -113,7 +113,7 @@ RSpec.describe Commands::Ingredients::Create do
           params["ingredient_source"] = "blah blah"
         end
 
-        it "fails" do
+        it "returns a Failure monad" do
           expect(subject).not_to be_success
           expect(subject.failure).to eq("Invalid Ingredient Source Type!")
         end

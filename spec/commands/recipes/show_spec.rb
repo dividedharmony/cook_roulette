@@ -16,7 +16,7 @@ RSpec.describe Commands::Recipes::Show do
     subject { command.result }
 
     context "if no recipe can be found with given id" do
-      it "fails" do
+      it "returns a Failure monad" do
         expect(subject).not_to be_success
         expect(subject.failure).to eq(
           "Could not find Recipe with id 999999999"
