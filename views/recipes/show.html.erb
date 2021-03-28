@@ -30,50 +30,56 @@
         <span class="raw-text">
           <%= line_item.raw_text %>
         </span>
-        <form action="/ingredients" class="ingredient-form">
-          <input type="hidden" name="line_item_id" value="<%= line_item.id %>">
-          <fieldset class="ingredient-source-choice">
-            <label>
-              <input
-                type="radio"
-                class="new-ingredient-type"
-                name="ingredient_source"
-                value="new-ingredient"
-                checked
-              />
-              New Ingredient
-            </label>
-            <label>
-              <input
-                type="radio"
-                class="old-ingredient-type"
-                name="ingredient_source"
-                value="old-ingredient"
-              />
-              Existing Ingredient
-            </label>
-          </fieldset>
-          <fieldset class="new-ingredient-field" style="display: none">
-            <label>
-              Ingredient Name
-              <input type="text" name="ingredient_name" class="ingredient-selector" />
-            </label>
-          </fieldset>
-          <fieldset class="old-ingredient-field" style="display: none">
-            <label>
-              Existing Ingredients:
-              <select name="ingredient_id" class="ingredient-selector existing-ingredients">
-                <option value="">Please Select an Ingredient</option>
-              </select>
-            </label>
-          </fieldset>
-          <input
-            type="submit"
-            value="Assign Ingredient"
-            class="submit-ingredient"
-            style="display: none;"
-          />
-        </form>
+        <% if line_item.ingredient %>
+          <em>
+            <%= line_item.ingredient.name %>
+          </em>
+        <% else %>
+          <form action="/ingredients" class="ingredient-form">
+            <input type="hidden" name="line_item_id" value="<%= line_item.id %>">
+            <fieldset class="ingredient-source-choice">
+              <label>
+                <input
+                  type="radio"
+                  class="new-ingredient-type"
+                  name="ingredient_source"
+                  value="new-ingredient"
+                  checked
+                />
+                New Ingredient
+              </label>
+              <label>
+                <input
+                  type="radio"
+                  class="old-ingredient-type"
+                  name="ingredient_source"
+                  value="old-ingredient"
+                />
+                Existing Ingredient
+              </label>
+            </fieldset>
+            <fieldset class="new-ingredient-field" style="display: none">
+              <label>
+                Ingredient Name
+                <input type="text" name="ingredient_name" class="ingredient-selector" />
+              </label>
+            </fieldset>
+            <fieldset class="old-ingredient-field" style="display: none">
+              <label>
+                Existing Ingredients:
+                <select name="ingredient_id" class="ingredient-selector existing-ingredients">
+                  <option value="">Please Select an Ingredient</option>
+                </select>
+              </label>
+            </fieldset>
+            <input
+              type="submit"
+              value="Assign Ingredient"
+              class="submit-ingredient"
+              style="display: none;"
+            />
+          </form>
+        <% end %>
       </li>
     <% end %>
   </ol>
