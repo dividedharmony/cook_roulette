@@ -7,6 +7,9 @@ gem 'httparty'
 gem 'activerecord'
 gem 'dry-monads'
 
+gem 'rabl'
+gem 'oj'
+
 group :development, :test do
   gem 'pry'
   gem 'dotenv'
