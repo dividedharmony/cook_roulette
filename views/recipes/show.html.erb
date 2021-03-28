@@ -3,6 +3,12 @@
     Recipes#show
   </h1>
 
+  <% if @flash %>
+    <h2>
+      <%= @flash %>
+    </h2>
+  <% end %>
+
   <h3>
     Recipe URL:
     <%= recipe.url %>

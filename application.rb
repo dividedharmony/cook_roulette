@@ -27,6 +27,7 @@ require "./models/cook_roulette/ip_address"
 require "./commands/recipes/create"
 require "./commands/recipes/show"
 require "./commands/recipes/list"
+require "./commands/ingredients/create"
 
 Rabl.register!
 
@@ -49,6 +50,10 @@ class CookRouletteApp < Sinatra::Base
   end
 
   get '/recipes' do
+    # flashed from POST /ingredients
+    @flash = session["flash_msg"]
+    session["flash_msg"] = nil
+
     list_result = Commands::Recipes::List.(request: request, params: params)
     if list_result.success?
       list_cmd = list_result.value!
@@ -84,6 +89,17 @@ class CookRouletteApp < Sinatra::Base
       rabl :"ingredients/index", format: :json
     else
       "Format is not supported"
+    end
+  end
+
+  post "/ingredients" do
+    create_result = Commands::Ingredients::Create.(request: request, params: params)
+    if create_result.success?
+      create_cmd = create_result.value!
+      session["flash_msg"] = "Successfully created an ingredient!"
+      redirect to(create_cmd.success_path)
+    else
+      create_result.failure
     end
   end
 end
