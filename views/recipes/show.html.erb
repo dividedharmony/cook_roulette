@@ -1,26 +1,74 @@
-<h1>
-  Recipes#show
-</h1>
+<main id="recipe-show">
+  <h1 id="">
+    Recipes#show
+  </h1>
 
-<h3>
-  Recipe URL:
-  <%= recipe.url %>
-</h3>
+  <h3>
+    Recipe URL:
+    <%= recipe.url %>
+  </h3>
 
-<h3>
-  Recipe Title:
-  <%= recipe.name %>
-</h3>
+  <h3>
+    Recipe Title:
+    <%= recipe.name %>
+  </h3>
 
-<h3>
-  Created At:
-  <%= recipe.created_at %>
-</h3>
+  <h3>
+    Created At:
+    <%= recipe.created_at %>
+  </h3>
 
-<ol>
-  <% recipe.line_items.each do |line_item| %>
-    <li>
-      <%= line_item.raw_text %>
-    </li>
-  <% end %>
-</ol>
+  <ol>
+    <% recipe.line_items.each do |line_item| %>
+      <li class="line-item" id="line-item-<%= line_item.id %>">
+        <span class="raw-text">
+          <%= line_item.raw_text %>
+        </span>
+        <form action="/ingredients" class="ingredient-form">
+          <input type="hidden" name="line_item_id" value="<%= line_item.id %>">
+          <fieldset class="ingredient-source-choice">
+            <label>
+              <input
+                type="radio"
+                class="new-ingredient-type"
+                name="ingredient_source"
+                value="new-ingredient"
+                checked
+              />
+              New Ingredient
+            </label>
+            <label>
+              <input
+                type="radio"
+                class="old-ingredient-type"
+                name="ingredient_source"
+                value="old-ingredient"
+              />
+              Existing Ingredient
+            </label>
+          </fieldset>
+          <fieldset class="new-ingredient-field" style="display: none">
+            <label>
+              Ingredient Name
+              <input type="text" name="ingredient_name" class="ingredient-selector" />
+            </label>
+          </fieldset>
+          <fieldset class="old-ingredient-field" style="display: none">
+            <label>
+              Existing Ingredients:
+              <select name="ingredient_id" class="ingredient-selector existing-ingredients">
+                <option value="">Please Select an Ingredient</option>
+              </select>
+            </label>
+          </fieldset>
+          <input
+            type="submit"
+            value="Assign Ingredient"
+            class="submit-ingredient"
+            style="display: none;"
+          />
+        </form>
+      </li>
+    <% end %>
+  </ol>
+</main>
