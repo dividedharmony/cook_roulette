@@ -85,6 +85,7 @@ class CookRouletteApp < Sinatra::Base
   end
 
   get %r{/ingredients.?([\w]*)} do |ext|
+    @ingredients = Ingredient.all
     if ext == "json"
       rabl :"ingredients/index", format: :json
     else

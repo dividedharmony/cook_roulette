@@ -10,7 +10,7 @@
       "/ingredients.json"
     ).done(function(payload_string) {
       var payload = JSON.parse(payload_string);
-      insertIngredients(payload["ingredients"]);
+      insertIngredients(payload);
     }).fail(function (error_msg) {
       console.warn(error_msg);
     });
@@ -46,8 +46,8 @@
       var ingredients = ings || [];
       var options = []
       for (var i = 0; i < ingredients.length; i++) {
-        var ingredient = ingredients[i];
-        var option = '<option value="' + ingredient + '">' + ingredient + '</option>'
+        var ingredient = ingredients[i]["ingredient"];
+        var option = '<option value="' + ingredient["id"] + '">' + ingredient["name"] + '</option>'
         options.push(option);
       }
       var $selectIngredients = $(".existing-ingredients");
