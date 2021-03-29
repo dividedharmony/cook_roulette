@@ -35,7 +35,7 @@
             <%= line_item.ingredient.name %>
           </em>
         <% else %>
-          <form action="/ingredients" class="ingredient-form">
+          <form action="/ingredients" method="post" class="ingredient-form">
             <input type="hidden" name="line_item_id" value="<%= line_item.id %>">
             <fieldset class="ingredient-source-choice">
               <label>
